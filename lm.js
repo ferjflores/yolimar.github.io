@@ -19,5 +19,10 @@ $( document ).ready(function() {
         var numero = codigo.concat(numero);
 
         $( "div#numero" ).html(numero);
+
+        var input_numero_telefono = $("span.qnumcode:contains('00')").parent().parent().children('.survey-question-answer').find('input');
+        $(input_numero_telefono).val(numero);
+        $(input_numero_telefono).attr('readonly', 'true');
+        $(input_numero_telefono).addClass("input-disabled");
 });
 
