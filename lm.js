@@ -185,7 +185,7 @@ $( document ).ready(function() {
 							row["estado"] = estado;
 							row["zona"] = zona;
 							row["fecha"] = fecha;
-							row["prueba"] = true;
+							/*row["prueba"] = true;*/
 
 							$.ajax({
 							      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
