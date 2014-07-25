@@ -36,8 +36,10 @@ $( document ).ready(function() {
 
 		var urlbase = "https://api.mongolab.com/api/1/";
 		var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
+ 		var collection = "numero_prueba";
+
 		$.ajax({
-		  url: urlbase + 'databases/numeros/collections/numero?q={"numero":"'+ numero + '"}&apiKey=' + apikey,
+		  url: urlbase + 'databases/numeros/collections/' + collection + '?q={"numero":"'+ numero + '"}&apiKey=' + apikey,
 		  dataType: 'json',
 		  async: false,
 		  success: function(data) {
@@ -136,11 +138,12 @@ $( document ).ready(function() {
         	var input_razon_no_efectiva = $("span.qnumcode:contains('2')").parent().parent().children('.survey-question-answer').find('input:checked').next("label").text();
         	var razon_no_efectiva = jQuery.inArray( input_razon_no_efectiva, razon_no_efectiva_array );
 
-    		var numero = $( "div#numero" ).text();
-    		var fecha = $.now();
-    		var id = $("div#numero").attr('data-id');
-    		var urlbase = "https://api.mongolab.com/api/1/";
-			var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
+	    		var numero = $( "div#numero" ).text();
+	    		var fecha = $.now();
+	    		var id = $("div#numero").attr('data-id');
+	    		var urlbase = "https://api.mongolab.com/api/1/";
+	    		var collection = "numero_prueba";
+					var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
 
         	if ( typeof input_encuesta_efectiva !== "undefined") {
         		if (input_encuesta_efectiva == 'N') {
@@ -154,7 +157,7 @@ $( document ).ready(function() {
 						row["razon_no_efectiva"] = razon_no_efectiva;
 						row["fecha"] = fecha;
 						$.ajax({
-						      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
+						      url: urlbase + 'databases/numeros/collections/' + collection + '?apiKey=' + apikey,
 								data: JSON.stringify( row ),
 								type: "POST",
 								async: false,
@@ -185,10 +188,9 @@ $( document ).ready(function() {
 							row["estado"] = estado;
 							row["zona"] = zona;
 							row["fecha"] = fecha;
-							/*row["prueba"] = true;*/
 
 							$.ajax({
-							      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
+							      url: urlbase + 'databases/numeros/collections/' + collection + '?apiKey=' + apikey,
 									data: JSON.stringify( row ),
 									type: "POST",
 									async: false,
