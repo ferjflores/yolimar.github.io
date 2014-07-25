@@ -193,7 +193,7 @@ $( document ).ready(function() {
 							      url: urlbase + 'databases/numeros/collections/' + collection + '?apiKey=' + apikey,
 									data: JSON.stringify( row ),
 									type: "POST",
-									async: false,
+									async: true,
 									contentType: "application/json"
 							});
 						}
