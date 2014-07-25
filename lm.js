@@ -30,6 +30,9 @@ $( document ).ready(function() {
         	var numero = $(input_numero_telefono).val();
 
         }
+		
+
+		//Buscar si el numero existe en la base de datos
 
 		var urlbase = "https://api.mongolab.com/api/1/";
 		var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
@@ -116,45 +119,86 @@ $( document ).ready(function() {
 			"No sabe / No responde (No leer)"
 		];
 
-        $("button.submit").click(function() {
-        	var input_sexo = $("span.qnumcode:contains('3')").parent().parent().children('.survey-question-answer').find('input:checked').val();
-        	var input_edad = $("span.qnumcode:contains('4')").parent().parent().children('.survey-question-answer').find('option:selected').text();
-        	var input_estado = $("span.qnumcode:contains('5')").parent().parent().children('.survey-question-answer').find('option:selected').text();
-        	var input_zona = $("span.qnumcode:contains('6')").parent().parent().children('.survey-question-answer').find('option:selected').text();
+		var razon_no_efectiva_array = [
+			"No le interesa",
+			"No contestó el teléfono",
+			"Contestadora automatica",
+			"Colgo el teléfono",
+			"El número telefónico no existe",
+			"Número suspendido",
+			"Menor de edad"
+		];
 
-        	var sexo = jQuery.inArray( input_sexo, sexo_array );
-        	var edad = jQuery.inArray( input_edad, edad_array );
-        	var estado = jQuery.inArray( input_estado, estado_array );
-        	var zona = jQuery.inArray( input_zona, zona_array );
-        	if (( typeof sexo !== "undefined" && sexo >= 0) && ( typeof edad !== "undefined" && edad >= 0) && ( typeof estado !== "undefined" && estado >= 0) && ( typeof zona !== "undefined" && zona >= 0)) {
-        		var numero = $( "div#numero" ).text();
-        		var fecha = $.now();
+        $("form").submit(function() {
 
-        		//Buscar si el numero existe en la base de datos
-        		var urlbase = "https://api.mongolab.com/api/1/";
-				var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
 
-				var resultado = null;
-				var id = $("div#numero").attr('data-id');
-				if (id == 0) {
-					var row = {};
-					row["numero"] = numero;
-					row["sexo"] = sexo;
-					row["edad"] = edad;
-					row["estado"] = estado;
-					row["zona"] = zona;
-					row["fecha"] = fecha;
+        	var input_encuesta_efectiva = $("span.qnumcode:contains('1')").parent().parent().children('.survey-question-answer').find('input:checked').val();
+        	var input_razon_no_efectiva = $("span.qnumcode:contains('2')").parent().parent().children('.survey-question-answer').find('input:checked').next("label").text();
+        	var razon_no_efectiva = jQuery.inArray( input_razon_no_efectiva, razon_no_efectiva_array );
 
-					$.ajax({
-					      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
-							data: JSON.stringify( row ),
-							type: "POST",
-							async: false,
-							contentType: "application/json"
-					});
-				}
+    		var numero = $( "div#numero" ).text();
+    		var fecha = $.now();
+    		var id = $("div#numero").attr('data-id');
+    		var urlbase = "https://api.mongolab.com/api/1/";
+			var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
 
-        	}
+        	if ( typeof input_encuesta_efectiva !== "undefined") {
+        		if (input_encuesta_efectiva == 'N') {
+        			if (id == 0) {
+						var row = {};
+						row["numero"] = numero;
+						row["sexo"] = null;
+						row["edad"] = null;
+						row["estado"] = null;
+						row["zona"] = null;
+						row["razon_no_efectiva"] = razon_no_efectiva;
+						row["fecha"] = fecha;
+						$.ajax({
+						      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
+								data: JSON.stringify( row ),
+								type: "POST",
+								async: false,
+								contentType: "application/json"
+						});
+					}
+        		}
+        		else {
+
+		        	var input_sexo = $("span.qnumcode:contains('3')").parent().parent().children('.survey-question-answer').find('input:checked').val();
+		        	var input_edad = $("span.qnumcode:contains('4')").parent().parent().children('.survey-question-answer').find('option:selected').text();
+		        	var input_estado = $("span.qnumcode:contains('5')").parent().parent().children('.survey-question-answer').find('option:selected').text();
+		        	var input_zona = $("span.qnumcode:contains('6')").parent().parent().children('.survey-question-answer').find('option:selected').text();
+
+		        	var sexo = jQuery.inArray( input_sexo, sexo_array );
+		        	var edad = jQuery.inArray( input_edad, edad_array );
+		        	var estado = jQuery.inArray( input_estado, estado_array );
+		        	var zona = jQuery.inArray( input_zona, zona_array );
+		        	if (( typeof sexo !== "undefined" && sexo >= 0) && ( typeof edad !== "undefined" && edad >= 0) && ( typeof estado !== "undefined" && estado >= 0) && ( typeof zona !== "undefined" && zona >= 0)) {
+
+
+						var resultado = null;
+						if (id == 0) {
+							var row = {};
+							row["numero"] = numero;
+							row["sexo"] = sexo;
+							row["edad"] = edad;
+							row["estado"] = estado;
+							row["zona"] = zona;
+							row["fecha"] = fecha;
+							row["prueba"] = true;
+
+							$.ajax({
+							      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
+									data: JSON.stringify( row ),
+									type: "POST",
+									async: false,
+									contentType: "application/json"
+							});
+						}
+
+		        	}
+		        }
+		 	}
         });
 });
 
