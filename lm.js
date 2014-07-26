@@ -36,8 +36,10 @@ $( document ).ready(function() {
 
 		var urlbase = "https://api.mongolab.com/api/1/";
 		var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
+ 		var collection = "numero";
+
 		$.ajax({
-		  url: urlbase + 'databases/numeros/collections/numero?q={"numero":"'+ numero + '"}&apiKey=' + apikey,
+		  url: urlbase + 'databases/numeros/collections/' + collection + '?q={"numero":"'+ numero + '"}&apiKey=' + apikey,
 		  dataType: 'json',
 		  async: false,
 		  success: function(data) {
@@ -129,38 +131,39 @@ $( document ).ready(function() {
 			"Menor de edad"
 		];
 
-        $("form").submit(function() {
-
+        $("form").submit(function(e) {
 
         	var input_encuesta_efectiva = $("span.qnumcode:contains('1')").parent().parent().children('.survey-question-answer').find('input:checked').val();
         	var input_razon_no_efectiva = $("span.qnumcode:contains('2')").parent().parent().children('.survey-question-answer').find('input:checked').next("label").text();
         	var razon_no_efectiva = jQuery.inArray( input_razon_no_efectiva, razon_no_efectiva_array );
 
-    		var numero = $( "div#numero" ).text();
-    		var fecha = $.now();
-    		var id = $("div#numero").attr('data-id');
-    		var urlbase = "https://api.mongolab.com/api/1/";
-			var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
+	    		var numero = $( "div#numero" ).text();
+	    		var fecha = $.now();
+	    		var id = $("div#numero").attr('data-id');
+	    		var urlbase = "https://api.mongolab.com/api/1/";
+	    		var collection = "numero";
+					var apikey = "iV1XrqloI35v1kOAs9Q24R11nrEFqavf";
 
         	if ( typeof input_encuesta_efectiva !== "undefined") {
         		if (input_encuesta_efectiva == 'N') {
         			if (id == 0) {
-						var row = {};
-						row["numero"] = numero;
-						row["sexo"] = null;
-						row["edad"] = null;
-						row["estado"] = null;
-						row["zona"] = null;
-						row["razon_no_efectiva"] = razon_no_efectiva;
-						row["fecha"] = fecha;
-						$.ajax({
-						      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
-								data: JSON.stringify( row ),
-								type: "POST",
-								async: false,
-								contentType: "application/json"
-						});
-					}
+								var row = {};
+								row["numero"] = numero;
+								row["sexo"] = null;
+								row["edad"] = null;
+								row["estado"] = null;
+								row["zona"] = null;
+								row["razon_no_efectiva"] = razon_no_efectiva;
+								row["fecha"] = fecha;
+								row['prueba'] = true;
+								$.ajax({
+								      url: urlbase + 'databases/numeros/collections/' + collection + '?apiKey=' + apikey,
+										data: JSON.stringify( row ),
+										type: "POST",
+										async: true,
+										contentType: "application/json"
+								});
+							}
         		}
         		else {
 
@@ -174,31 +177,29 @@ $( document ).ready(function() {
 		        	var estado = jQuery.inArray( input_estado, estado_array );
 		        	var zona = jQuery.inArray( input_zona, zona_array );
 		        	if (( typeof sexo !== "undefined" && sexo >= 0) && ( typeof edad !== "undefined" && edad >= 0) && ( typeof estado !== "undefined" && estado >= 0) && ( typeof zona !== "undefined" && zona >= 0)) {
+								var resultado = null;
+								if (id == 0) {
+									var row = {};
+									row["numero"] = numero;
+									row["sexo"] = sexo;
+									row["edad"] = edad;
+									row["estado"] = estado;
+									row["zona"] = zona;
+									row["fecha"] = fecha;
+									row['prueba'] = true;
 
-
-						var resultado = null;
-						if (id == 0) {
-							var row = {};
-							row["numero"] = numero;
-							row["sexo"] = sexo;
-							row["edad"] = edad;
-							row["estado"] = estado;
-							row["zona"] = zona;
-							row["fecha"] = fecha;
-							/*row["prueba"] = true;*/
-
-							$.ajax({
-							      url: urlbase + 'databases/numeros/collections/numero?apiKey=' + apikey,
-									data: JSON.stringify( row ),
-									type: "POST",
-									async: false,
-									contentType: "application/json"
-							});
-						}
-
+									$.ajax({
+									    url: urlbase + 'databases/numeros/collections/' + collection + '?apiKey=' + apikey,
+											data: JSON.stringify( row ),
+											type: "POST",
+											async: true,
+											contentType: "application/json"
+									});
+								}
 		        	}
 		        }
-		 	}
+		       $(this).submit();
+		 			}
         });
 });
 
