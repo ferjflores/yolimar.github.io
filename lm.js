@@ -161,7 +161,7 @@ jQuery.EnviarNumero = function(){
 				row["fecha"] = fecha;
 				//row['prueba'] = true;
 				if (id == 0) {
-					$.Insertar(row);
+					var id = $.Insertar(row);
 					$( "div#numero" ).attr('data-id', id);
 				}
 				else {
