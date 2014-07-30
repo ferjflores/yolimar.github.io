@@ -131,7 +131,7 @@ jQuery.EnviarNumero = function(){
 			row["numero"] = numero;
 			row["razon_no_efectiva"] = razon_no_efectiva;
 			row["fecha"] = fecha;
-			row['prueba'] = true;
+			//row['prueba'] = true;
 			if (id == 0) {
 				var id = $.Insertar(row);
 				$( "div#numero" ).attr('data-id', id);
@@ -158,7 +158,7 @@ jQuery.EnviarNumero = function(){
 				row["estado"] = estado;
 				row["zona"] = zona;
 				row["fecha"] = fecha;
-				row['prueba'] = true;
+				//row['prueba'] = true;
 				if (id == 0) {
 					var id = $.Insertar(row);
 					$( "div#numero" ).attr('data-id', id);
