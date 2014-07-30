@@ -5,20 +5,18 @@ $( document ).ready(function() {
 	var id = busqueda_numero.id;
 
 	var no_enviada = $("body").find("span.errormandatory").text();
-
+	var input_numero_telefono = $("span.qnumcode:contains('00')").parent().parent().children('.survey-question-answer').find('input');
 	if ( typeof no_enviada !== "undefined" && no_enviada) {
 		var numero = $(input_numero_telefono).val();
+		console.log(numero);
 		var consulta = $.Consulta(numero);
 		var id = consulta.id;
 	}
 
 
-
-
 	$( "div#numero" ).html(numero);
 	$( "div#numero" ).attr('data-id', id);
 
-	var input_numero_telefono = $("span.qnumcode:contains('00')").parent().parent().children('.survey-question-answer').find('input');
 	$(input_numero_telefono).val(numero);
 	$(input_numero_telefono).attr('readonly', 'true');
 	$(input_numero_telefono).addClass("input-disabled");
@@ -132,7 +130,7 @@ jQuery.EnviarNumero = function(){
 			row["numero"] = numero;
 			row["razon_no_efectiva"] = razon_no_efectiva;
 			row["fecha"] = fecha;
-			//row['prueba'] = true;
+			row['prueba'] = true;
 			if (id == 0) {
 				var id = $.Insertar(row);
 				$( "div#numero" ).attr('data-id', id);
@@ -159,7 +157,7 @@ jQuery.EnviarNumero = function(){
 				row["estado"] = estado;
 				row["zona"] = zona;
 				row["fecha"] = fecha;
-				//row['prueba'] = true;
+				row['prueba'] = true;
 				if (id == 0) {
 					var id = $.Insertar(row);
 					$( "div#numero" ).attr('data-id', id);
