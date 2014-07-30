@@ -22,7 +22,7 @@ $( document ).ready(function() {
 	$(input_numero_telefono).addClass("input-disabled");
 
 
-	var pregunta_encuesta_efectiva = $("span.qnumcode:contains('1')").parent().parent().children('.survey-question-answer').find('input');
+	/*var pregunta_encuesta_efectiva = $("span.qnumcode:contains('1')").parent().parent().children('.survey-question-answer').find('input');
 	var pregunta_razon_no_efectiva = $("span.qnumcode:contains('2')").parent().parent().children('.survey-question-answer').find('input');
 	var pregunta_sexo = $("span.qnumcode:contains('3')").parent().parent().children('.survey-question-answer').find('input');
 	var pregunta_edad = $("span.qnumcode:contains('4')").parent().parent().children('.survey-question-answer').find('select');
@@ -46,14 +46,16 @@ $( document ).ready(function() {
 	});
 	$(pregunta_zona).change(function(event) {
 		$.EnviarNumero();
+	});*/
+
+	$("form").submit(function(event) {
+		$.EnviarNumero();
 	});
-
-
 });
 
 
-jQuery.EnviarNumero = function(){
 
+jQuery.EnviarNumero = function(){
 	var sexo_array = [
 		"F",
 		"M"
@@ -118,14 +120,13 @@ jQuery.EnviarNumero = function(){
 	var input_encuesta_efectiva = $("span.qnumcode:contains('1')").parent().parent().children('.survey-question-answer').find('input:checked').val();
 	var input_razon_no_efectiva = $("span.qnumcode:contains('2')").parent().parent().children('.survey-question-answer').find('input:checked').next("label").text();
 	var razon_no_efectiva = jQuery.inArray( input_razon_no_efectiva, razon_no_efectiva_array );
-
 	var numero = $( "div#numero" ).text();
 	var fecha = $.now();
 	var id = $("div#numero").attr('data-id');
 
 
 	if ( typeof input_encuesta_efectiva !== "undefined") {
-		if (input_encuesta_efectiva == 'N' && (typeof razon_no_efectiva !== "undefined" && razon_no_efectiva >= 0)) {
+		if ((input_encuesta_efectiva == 'N' || input_encuesta_efectiva == 'C') && (typeof razon_no_efectiva !== "undefined" && razon_no_efectiva >= 0)) {
 			var row = {};
 			row["numero"] = numero;
 			row["razon_no_efectiva"] = razon_no_efectiva;
