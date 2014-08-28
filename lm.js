@@ -205,7 +205,7 @@ jQuery.Numero = function() {
 	var numero = codigo.concat(numero);
 
 	//Buscar si el numero existe en la base de datos, si existe verificar que se uso hace mas de un año
-	var consulta = $.Consulta(numero);
+	/*var consulta = $.Consulta(numero);
 	var id = consulta.id;
 	var fecha = consulta.fecha;
 
@@ -214,7 +214,8 @@ jQuery.Numero = function() {
 		if ( (fecha_actual - fecha) < (365 * 24 * 3600 * 1000)) {
 			var numero = $.Numero();
 		}
-	}
+	}*/
+	var id = 0;
 	return {"numero": numero, "id": id};
 }
 
@@ -228,6 +229,7 @@ jQuery.Consulta = function(numero) {
 		url: urlbase + 'databases/numeros/collections/' + collection + '?q={"numero":"'+ numero + '"}&apiKey=' + apikey,
 		dataType: 'json',
 		async: false,
+		timeout: 1000,
 		success: function(data) {
 		  resultado = data;
 		}
